@@ -5,41 +5,18 @@ const image1 = document.getElementById('image1');
 const image2 = document.getElementById('image2');
 const image3 = document.getElementById('image3');
 const textBox = document.getElementById('text-box');
+let isDark = false;
 
 
-// Dark Mode Styles
-function darkMode(){
 
-    switchMode(
-        'rgb(0 0 0 / 50%)',
-        'rgb(255 255 255 / 50%)',
-        'Dark Mode',
-        'fa-moon',
-        'fa-sun',
-        'dark'
-    );
+// Toggle between dark and light mode
+function toggleDarkLightMode(isDark){
+    nav.style.backgroundColor = isDark ? 'rgb(0 0 0 / 50%)' : 'rgb(255 255 255 / 50%)';
+    textBox.style.backgroundColor = isDark ? 'rgb(255 255 255 / 50%)' : 'rgb(0 0 0 / 50%)';
+    toggleIcon.children[0].textContent = isDark ? 'Dark Mode' : 'Light Mode';
+    toggleIcon.children[1].classList.replace(isDark ? 'fa-moon' : 'fa-sun',  isDark ? 'fa-sun' : 'fa-moon');
+    imageMode(isDark ? 'dark' : 'light');
 }
-
-// Light Mode Styles
-function lightMode(){
-    switchMode(
-        'rgb(255 255 255 / 50%)',
-        'rgb(0 0 0 / 50%)',
-        'Light Mode',
-        'fa-sun',
-        'fa-moon',
-        'light'
-    );
-}
-
-function switchMode(navColor, textBoxColor, textContent, addIcon, removeIcon, color){
-    nav.style.backgroundColor = navColor;
-    textBox.style.backgroundColor = textBoxColor;
-    toggleIcon.children[0].textContent = textContent;
-    toggleIcon.children[1].classList.replace(removeIcon, addIcon);
-    imageMode(color)
-}
-
 
 
 // Dark or Light Images
@@ -54,13 +31,15 @@ function imageMode(color){
 // Switch Them Dynamically
 function switchTheme(event) {
     if(event.target.checked) {
+        isDark = true;
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
-        darkMode();
+        toggleDarkLightMode(isDark);
     } else {
+        isDark = false;
         document.documentElement.removeAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'light');
-        lightMode();
+        toggleDarkLightMode(isDark);
     }
 }
 
@@ -74,11 +53,13 @@ console.log(currentTheme);
 if(currentTheme !== null) {
 
     if(currentTheme === 'dark'){
+        isDark = true;
         document.documentElement.setAttribute('data-theme', 'dark');
         toggleSwitch.toggleAttribute('checked');
-        darkMode();
+        toggleDarkLightMode(isDark);
     } else {
+        isDark = false;
         document.documentElement.removeAttribute('data-theme', 'dark');
-        lightMode();
+        toggleDarkLightMode(isDark);
     }
 }
